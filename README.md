@@ -1,39 +1,20 @@
+# Deploying a Python Lambda with dependencies using AWS CDK
 
-# Welcome to your CDK Python project!
+This is a template illustrating how to write and deploy a Lambda function which relies on external libraries.
 
-This is a blank project for CDK development with Python.
+## Requirements
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+In order to use this code, you must have Docker installed.
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+## How to use
 
-To manually create a virtualenv on MacOS and Linux:
+### Set up CDK
+
+In the root folder, create a virtual environment, activate it and install the infra dependencies.
 
 ```
 $ python3 -m venv .venv
-```
-
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
-
-```
 $ source .venv/bin/activate
-```
-
-If you are a Windows platform, you would activate the virtualenv like this:
-
-```
-% .venv\Scripts\activate.bat
-```
-
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
 $ pip install -r requirements.txt
 ```
 
@@ -43,16 +24,21 @@ At this point you can now synthesize the CloudFormation template for this code.
 $ cdk synth
 ```
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
+### Write your code
 
-## Useful commands
+Your application code should go in the `src` folder. You should treat this as the root folder for your code: in particular, this is where you should set up your project dependencies, using Poetry or pipenv.
 
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
+### Update the infra stack
 
-Enjoy!
+The infra configuration in `app.py` (and `infra/stack.py`) defines a simple Lambda function exposed through API Gateway. You probably will want to update this depending on your exact infrastructure configuration.
+
+### Build and deploy
+
+From the root folder, using the virtualenv you created in the first step, run:
+
+```
+$ cdk synth
+$ cdk deploy
+```
+
+Voilà! Your Python Lambda and its dependencies are now deployed.

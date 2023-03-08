@@ -10,13 +10,13 @@ class EchoService(Construct):
     def __init__(self, scope: Construct, id: str):
         super().__init__(scope, id)
 
-        handler = lambda_python.PythonFunction(
+        handler = lambda_python.PythonFunction( 
             self,
             "echo_lambda",
-            entry="src",
+            entry="src",  # this should point to the root level of your applicative code
             runtime=lambda_.Runtime.PYTHON_3_9,
-            index="echo/main.py",
-            handler="handler"
+            index="echo/main.py",  # relative path to your main Python file, from `entry`
+            handler="handler"  # which function to call in the main Python file
         )
 
         api = apigateway.RestApi(
